@@ -1,0 +1,5 @@
+Files in these directories are proprietary and licensed from Icons8 LLC.
+
+If you fork this repository or host your own instance of "JAPP" you MUST acquire a license for yourself/your organization. See https://icons8.com/license.
+
+You MAY NOT download these files from here. You MAY NOT redistribute these files. If you want to use the imagery in this directory in another project, you must acquire them directly from https://icons8.com.

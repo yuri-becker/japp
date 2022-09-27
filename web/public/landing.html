@@ -1,0 +1,126 @@
+<!--
+  ~ Copyright (C) 2022 - This file is part of "JAPP".
+  ~
+  ~ "JAPP" is free software: you can redistribute it and/or modify it under the
+  ~  terms of version 3 of the GNU Affero General Public License as published by the
+  ~  Free Software Foundation.
+  ~
+  ~ "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~   details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with JAPP.  If not, see http://www.gnu.org/licenses/.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <title>JAPP</title>
+  <meta name="description" content="Just another Planning Poker"/>
+  <link rel="manifest" href="/assets/site.webmanifest">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#7f007e">
+  <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#9f00a7">
+  <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+  <meta name="theme-color" content="#7f007e">
+  <link rel="stylesheet" href="/assets/styles.css"/>
+  <link rel="stylesheet" href="/assets/landing.css"/>
+  <link rel="stylesheet" href="/assets/icons/styles.min.css"/>
+</head>
+<body>
+<header>
+  <h1>JAPP</h1>
+  <p>a planning poker thingy</p>
+</header>
+<main>
+  <img src="/assets/illustrations/landing.png" class="landing__illu"
+       alt="four cats in a heated discussion, one of them presenting a card">
+  <section class="landing__cta">
+    <a href="/app/create-session">
+      <button><i class="icons8">&#xf106;</i>Create a session</button>
+    </a>
+    <a href="/app/join-session">
+      <button class="button--outline"><i class="icons8">&#xf10e;</i>Join a session</button>
+    </a>
+  </section>
+  <section class="landing__features">
+    <div class="landing__feature">
+      <div class="landing__feature-icon-container">
+        <i class="icons8">&#xf100;</i>
+      </div>
+      <div>
+        <h4>Secure Sessions</h4>
+        <p>Your session URL can’t be guessed or brute-forced. Ending your session will completely erase all associated
+          data.</p>
+      </div>
+    </div>
+    <div class="landing__feature">
+      <div class="landing__feature-icon-container">
+        <i class="icons8">&#xf104;</i>
+      </div>
+      <div>
+        <h4>Open Source</h4>
+        <p>This project is completely free and open-source. Feel free to check out the source code on GitHub.</p>
+      </div>
+    </div>
+    <div class="landing__feature">
+      <div class="landing__feature-icon-container">
+        <i class="icons8">&#xf102;</i>
+      </div>
+      <div>
+        <h4>Custom Scales</h4>
+        <p>The default is Fibonacci numbers up to 100. You can also use shirt sizes or define your own scale.</p>
+      </div>
+    </div>
+    <div class="landing__feature">
+      <div class="landing__feature-icon-container">
+        <i class="icons8">&#xf105;</i>
+      </div>
+      <div>
+        <h4>More to come?</h4>
+        <p>This project is still in active development. More features might be added before you know it...</p>
+      </div>
+    </div>
+  </section>
+  <section class="landing__links">
+    <button class="button--flat">
+      <i class="icons8">&#xf103;</i>
+      See on GitHub
+    </button>
+    <a href="https://ko-fi.com/yuuuri">
+      <button class="button--flat">
+        <i class="icons8" aria-hidden="true">&#xf101;</i>
+        Buy me a Coffee
+      </button>
+    </a>
+  </section>
+  <section class="landing__questions">
+    <h3>What's Planning Poker?</h3>
+    <p>Planning Poker is a way of estimating tasks. Team members place cards containing their estimate face-down on a
+      table.</p>
+    <p>When everyone has placed their cards, the cards are flipped - revealing everyone's estimates. If the estimates
+      are
+      different, you discuss. You then repeat this until every estimate is the same.</p>
+    <h3>Why do I need Planning Poker?</h3>
+    <p>Planning Poker somewhat avoids cognitive bias you have with other methods for estimations.</p>
+    <h3>Should I use Planning Poker?</h3>
+    <p>Depending on the nature of your project, estimates can be pointless and a pure waste of time. In other projects,
+      estimates can make sense, or sometimes you just need to assign Story Points so important people can look at
+      important velocity charts.</p>
+    <p>So if you need estimations, Planning Poker surely is one way of doing them. </p>
+  </section>
+</main>
+<footer>
+  <script src="/assets/footer-inject.js"></script>
+</footer>
+</body>
+</html>

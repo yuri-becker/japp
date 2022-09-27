@@ -1,0 +1,71 @@
+/*
+ * Copyright (C) 2022 - This file is part of "JAPP".
+ *
+ * "JAPP" is free software: you can redistribute it and/or modify it under the
+ *  terms of version 3 of the GNU Affero General Public License as published by the
+ *  Free Software Foundation.
+ *
+ * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ *   details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ */
+
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-BoldItalic.ttf");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-Italic.ttf");
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-Light.ttf");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-LightItalic.ttf");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-MediumItalic.ttf");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url("/assets/font/Nunito-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}

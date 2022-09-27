@@ -1,0 +1,189 @@
+/*
+ * Copyright (C) 2022 - This file is part of "JAPP".
+ *
+ * "JAPP" is free software: you can redistribute it and/or modify it under the
+ *  terms of version 3 of the GNU Affero General Public License as published by the
+ *  Free Software Foundation.
+ *
+ * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ *   details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ */
+@import url("/assets/font/nunito.css");
+
+html {
+  height: 100%;
+
+  --japp-spacing: 1.375rem;
+  --japp-spacing-half: calc(var(--japp-spacing) / 2);
+  --japp-color-primary: #B227AE;
+  --japp-color-primary-light: #E75FE0;
+  --japp-color-body: #fff;
+  --japp-color-body-dark: #D4D4D4;
+  --japp-background: #1D1D1D;
+  --japp-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  --japp-shadow--hover: 0px 4px 4px color-mod(var(--japp-color-primary) alpha(25%));
+  --japp-color-disabled: rgba(132, 132, 132, 0.3);
+  --japp-color-danger: #D50000;
+}
+
+/*
+ * Structural elements
+ */
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background-color: var(--japp-background);
+  color: var(--japp-color-body);
+}
+
+#root {
+  flex: 1 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  margin: var(--japp-spacing);
+  flex: 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--japp-spacing);
+}
+
+header {
+  text-align: center;
+  padding-top: var(--japp-spacing)
+}
+
+header > p {
+  margin: 0;
+}
+
+footer {
+  background-color: #000;
+  width: 100%;
+  height: 3rem;
+  font-size: .875rem;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer > a {
+  margin: 0 var(--japp-spacing-half);
+}
+
+/*
+ * Typography
+ */
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.36em;
+}
+
+h4 {
+  font-weight: 500;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+
+/*
+ * Components
+ */
+
+img {
+  user-select: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-weight: 700;
+  background-color: var(--japp-color-primary);
+  border: 0;
+  font-size: 1rem;
+  height: 3rem;
+  border-radius: 1.5rem;
+  width: 21.4rem;
+  max-width: 100%;
+  color: var(--japp-color-body);
+  font-family: inherit;
+  box-shadow: var(--japp-shadow);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none !important;
+
+  transition: background-color .24s ease-in-out, box-shadow .24s ease-in-out;
+}
+
+button > i.icons8 {
+  height: 1.2rem;
+  object-fit: contain;
+  margin-right: .43rem;
+  margin-top: -.1rem;
+}
+
+button > i.icons8 {
+  font-size: 1.2rem;
+}
+
+
+button:not([disabled]):hover {
+  background-color: var(--japp-color-primary-light);
+  box-shadow: var(--japp-shadow--hover);
+}
+
+button.button--outline {
+  border: 2px solid var(--japp-color-primary);
+  background-color: transparent;
+  color: var(--japp-color-primary-light);
+  transition: color .24s ease-in-out, border-color .24s ease-in-out;
+}
+
+button.button--outline:not([disabled]):hover {
+  color: var(--japp-color-body);
+  border-color: var(--japp-color-body);
+  background-color: transparent;
+}
+
+button.button--flat {
+  background-color: transparent;
+  color: var(--japp-color-primary-light);
+  box-shadow: none;
+  transition: color .24s ease-in-out;
+}
+
+
+button.button--flat:not([disabled]):hover {
+  color: var(--japp-color-body);
+  background-color: transparent;
+  box-shadow: none;
+}
+
+
+button[disabled] {
+  cursor: auto;
+  background-color: var(--japp-color-disabled);
+  color: var(--japp-color-disabled);
+}
+

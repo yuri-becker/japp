@@ -1,0 +1,6 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Copyright (C) &amp;#36;today.year - This file is part of &quot;&amp;#36;project.name&quot;.&#10;&#10;&quot;&amp;#36;project.name&quot; is free software: you can redistribute it and/or modify it under the&#10; terms of version 3 of the GNU Affero General Public License as published by the&#10; Free Software Foundation.&#10;&#10;&quot;&amp;#36;project.name&quot; is distributed in the hope that it will be useful, but WITHOUT ANY&#10; WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS&#10; FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more&#10;  details.&#10;&#10;You should have received a copy of the GNU Affero General Public License&#10;along with &amp;#36;project.name.  If not, see http://www.gnu.org/licenses/." />
+    <option name="myName" value="AGPL" />
+  </copyright>
+</component>

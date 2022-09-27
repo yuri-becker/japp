@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Icons8" pattern="file[japp]:static/assets/icons/*||file[japp]:static/assets/illustrations/*" />
+</component>

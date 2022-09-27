@@ -1,0 +1,79 @@
+/*
+ * Copyright (C) 2022 - This file is part of "JAPP".
+ *
+ * "JAPP" is free software: you can redistribute it and/or modify it under the
+ *  terms of version 3 of the GNU Affero General Public License as published by the
+ *  Free Software Foundation.
+ *
+ * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ *   details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ */
+
+.landing__illu {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.landing__cta {
+  display: flex;
+  justify-content: center;
+  gap: var(--japp-spacing);
+  flex-wrap: wrap;
+}
+
+.landing__features {
+  display: flex;
+  gap: var(--japp-spacing);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.landing__features > div {
+  flex-basis: max(24.6rem, calc(50% - var(--japp-spacing)));
+  display: flex;
+  gap: var(--japp-spacing);
+  align-items: center;
+}
+
+.landing__features > .landing__feature > div {
+  flex: 1;
+}
+
+.landing__features > .landing__feature > .landing__feature-icon-container {
+  background-color: var(--japp-color-primary);
+  border-radius: 50%;
+  flex: 0 0;
+  height: 6rem;
+  width: 6rem;
+}
+
+.landing__features > .landing__feature > .landing__feature-icon-container > i.icons8 {
+  font-size: 4rem;
+  margin: 1rem;
+  color: var(--japp-color-body);
+}
+
+.landing__features > .landing__feature > div > p {
+  margin: 0;
+}
+
+.landing__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--japp-spacing);
+  justify-content: center;
+}
+
+section.landing__questions {
+  max-width: 50rem;
+}
+
+section.landing__questions h3 {
+  margin-top: var(--japp-spacing);
+}

@@ -1,0 +1,94 @@
+/*
+ * Copyright (C) 2022 - This file is part of "JAPP".
+ *
+ * "JAPP" is free software: you can redistribute it and/or modify it under the
+ *  terms of version 3 of the GNU Affero General Public License as published by the
+ *  Free Software Foundation.
+ *
+ * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ *   details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ */
+
+.input {
+  --width: 21.4rem;
+}
+
+.input .input__container {
+  border: 2px solid var(--japp-color-body);
+  padding: .875rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-radius: 2rem;
+  width: var(--width);
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: border-color .24s ease-in-out, color .24s ease-in-out;
+  cursor: text;
+}
+
+.input label {
+  font-weight: 700;
+  margin-right: .5rem;
+  cursor: text;
+  user-select: none;
+}
+
+.input .input__hint {
+  color: var(--japp-color-body-dark);
+  font-size: .875rem;
+  margin-top: .2rem;
+  max-width: var(--width);
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+
+.input .input__icon {
+  display: inline-block;
+  margin-right: .5rem;
+  height: 1.4rem;
+  font-size: 1.4rem;
+  margin-top: -.4rem;
+}
+
+.input input {
+  background-color: transparent;
+  color: var(--japp-color-body);
+  font-size: 1rem;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  flex: 1 1;
+  width: 100%;
+  transition: color .24s ease-in-out;
+}
+
+.input.input--has-error input:not(:focus) {
+  color: var(--japp-color-danger);
+}
+
+.input input:focus, input input:active {
+  border-color: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.input .input__error {
+  color: var(--japp-color-danger);
+}
+
+.input.input--has-error .input__container {
+  border-color: var(--japp-color-danger);
+  color: var(--japp-color-danger);
+}
+
+.input .input__container:focus-within {
+  color: var(--japp-color-primary-light);
+  border-color: var(--japp-color-primary-light);
+}
