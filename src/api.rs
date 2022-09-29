@@ -83,7 +83,7 @@ async fn create_session(
     .map(|session| {
         Json(CreateSessionResponse {
             id: session.id.unwrap().to_hex(),
-            secret: secret.clear_textz
+            secret: secret.clear_text
         })
     })
 }
