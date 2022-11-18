@@ -23,12 +23,14 @@ import { Page } from '../common/page'
 import Session from './session'
 import { SessionView } from './session-view'
 import { Spinner } from '../common/spinner'
+import { useEventStream } from './use-event-stream'
 
 export default () => {
   const { sessionId, secret } = useSessionParams()
   const backend = useBackend()
   const { sessionName, setSessionName, ownName, setOwnName } = useSessionStore()
   const [credentialsValid, setCredentialsValid] = useState<boolean | undefined>()
+  const [openStream, closeStream] = useEventStream()
 
   useEffect(() => {
     if (!sessionId || !secret) {

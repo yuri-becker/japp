@@ -19,33 +19,18 @@ extern crate rocket;
 extern crate core;
 
 use crate::application::database::MongoDb;
-use api::routes as api_routes;
-use rocket::fs::NamedFile;
-use rocket::{catch, fs::relative, fs::FileServer};
 use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
-use std::path::Path;
-use web_router::routes as web_routes;
+use rocket::tokio::sync::broadcast::channel;
+use crate::http::catchers::{not_found, unauthorized, internal_server_error};
+use crate::http::events::{Events, Message};
+use crate::http::session::SessionApi;
+use crate::http::statics::Static;
 
-mod api;
 mod application;
 mod domain;
+mod http;
 mod usecase;
-mod web_router;
 
-#[catch(404)]
-async fn not_found() -> Option<NamedFile> {
-    NamedFile::open(Path::new("static/404.html")).await.ok()
-}
-
-#[catch(401)]
-fn unauthorized() -> &'static str {
-    "Unauthorized 🎅"
-}
-
-#[catch(500)]
-fn internal_server_error() -> &'static str {
-    "Internal Server Error 😭"
-}
 
 fn docs() -> SwaggerUIConfig {
     SwaggerUIConfig {
@@ -58,12 +43,11 @@ fn docs() -> SwaggerUIConfig {
 fn rocket() -> _ {
     rocket::build()
         .attach(MongoDb)
+        .manage(channel::<Message>(1024).0)
+        .mount("/", Static::files())
+        .mount("/", Static::routes())
         .mount("/api/swagger", make_swagger_ui(&docs()))
-        .mount("/api", api_routes())
-        .mount("/", web_routes())
-        .mount("/", FileServer::from(relative!("static")).rank(-1))
-        .register(
-            "/",
-            catchers![not_found, internal_server_error, unauthorized],
-        )
+        .mount("/api/session", SessionApi::routes())
+        .mount("/api/events", Events::routes())
+        .register("/", catchers![not_found, internal_server_error, unauthorized])
 }

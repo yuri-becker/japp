@@ -66,7 +66,7 @@ impl From<Participant> for ParticipantResponse {
 }
 
 #[openapi]
-#[post("/session", data = "<req>")]
+#[post("/", data = "<req>")]
 async fn create_session(
     req: Json<CreateSessionRequest<'_>>,
 ) -> Result<Json<CreateSessionResponse>, ErrorResponse> {
@@ -78,18 +78,18 @@ async fn create_session(
             .unwrap_or_else(generate_session_name),
         secret.db_safe_encrypted,
     )
-    .await
-    .map_err(ErrorResponse::from)
-    .map(|session| {
-        Json(CreateSessionResponse {
-            id: session.id.unwrap().to_hex(),
-            secret: secret.clear_textz
+        .await
+        .map_err(ErrorResponse::from)
+        .map(|session| {
+            Json(CreateSessionResponse {
+                id: session.id.unwrap().to_hex(),
+                secret: secret.clear_text,
+            })
         })
-    })
 }
 
 #[openapi]
-#[post("/session/<id>/participant?<secret>")]
+#[post("/<id>/participant?<secret>")]
 async fn log_into_session(
     id: &str,
     secret: &str,
@@ -126,7 +126,7 @@ async fn log_into_session(
 }
 
 #[openapi]
-#[put("/session/<session_id>/participant/<name>")]
+#[put("/<session_id>/participant/<name>")]
 async fn set_name(
     session_id: &str,
     name: &str,
@@ -140,13 +140,13 @@ async fn set_name(
             ..Participant::default()
         },
     )
-    .await
-    .map(|_| ())
-    .map_err(ErrorResponse::Mongo)
+        .await
+        .map(|_| ())
+        .map_err(ErrorResponse::Mongo)
 }
 
 #[openapi]
-#[get("/session/<session_id>")]
+#[get("/<session_id>")]
 async fn get_session(
     session_id: &str,
     _participant: ParticipantId<'_>,
@@ -160,7 +160,7 @@ async fn get_session(
 }
 
 #[openapi]
-#[get("/session/<session_id>/participant/me")]
+#[get("/<session_id>/participant/me")]
 async fn get_me(
     session_id: &str,
     participant_id: ParticipantId<'_>,
@@ -173,12 +173,17 @@ async fn get_me(
         .map(Json)
 }
 
-pub fn routes() -> Vec<Route> {
-    openapi_get_routes![
+pub struct SessionApi {}
+
+impl SessionApi {
+    pub fn routes() -> Vec<Route> {
+        openapi_get_routes![
         create_session,
         log_into_session,
         set_name,
         get_session,
         get_me
     ]
+    }
 }
+
