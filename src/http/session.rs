@@ -14,6 +14,7 @@
  * along with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
+use std::borrow::Borrow;
 use crate::application::error::ErrorResponse;
 use crate::application::participant_id::ParticipantId;
 use crate::domain::session::{session_repository, Participant};
@@ -22,8 +23,9 @@ use crate::usecase::secrets::{generate_secret, verify_secret};
 use mongodb::bson::oid;
 use rocket::http::{Cookie, CookieJar};
 use rocket::serde::{json::Json, Deserialize, Serialize};
-use rocket::{post, Route};
+use rocket::{post, Route, State};
 use rocket_okapi::{openapi, openapi_get_routes, JsonSchema};
+use crate::http::events::{Message, MessageStream, Payload, Receiver};
 
 #[derive(Serialize, JsonSchema)]
 struct CreateSessionResponse {
@@ -131,16 +133,21 @@ async fn set_name(
     session_id: &str,
     name: &str,
     participant_id: ParticipantId<'_>,
+    message_stream: &State<MessageStream>
 ) -> Result<(), ErrorResponse> {
     session_repository::update_participant(
         session_id,
         &Participant {
-            id: Option::Some(oid::ObjectId::parse_str(participant_id.0).unwrap()),
+            id: Option::Some(oid::ObjectId::parse_str(participant_id.0.to_string()).unwrap()),
             name: Option::Some(name.to_string()),
             ..Participant::default()
         },
     )
         .await
+        .and_then(|_| Result::Ok(message_stream.send(Message {
+            receiver: Receiver::Session(oid::ObjectId::parse_str(session_id).unwrap()),
+            payload: Payload::ParticipantJoined {id: participant_id.0.to_string(), name: name.to_string() }
+        })))
         .map(|_| ())
         .map_err(ErrorResponse::Mongo)
 }

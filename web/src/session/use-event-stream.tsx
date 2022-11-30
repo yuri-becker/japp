@@ -24,6 +24,7 @@ export const useEventStream = () => {
     return new Promise<void>(resolve => {
       stream.current = new EventSource(`/api/events/${state.sessionId}`)
       stream.current.addEventListener('open', () => {
+        console.debug(`Opened event stream for session id ${state.sessionId}`)
         resolve()
       })
       stream.current.addEventListener('message', event => {
@@ -36,7 +37,10 @@ export const useEventStream = () => {
   }
 
   const close = () => {
-    stream.current?.close()
+    if (stream.current) {
+      console.debug('Closing event stream')
+      stream.current?.close()
+    }
   }
 
   return [join, close]

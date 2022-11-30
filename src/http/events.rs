@@ -18,7 +18,7 @@ use rocket::tokio::sync::broadcast::{Sender, error::RecvError};
 use rocket::tokio::select;
 use mongodb::bson::oid::ObjectId;
 use rocket::response::stream::{EventStream, Event};
-use rocket::{Route, Shutdown, State, routes};
+use rocket::{Route, Shutdown, State, routes };
 use rocket::futures::Stream;
 use crate::application::participant_id::ParticipantId;
 use rocket::serde::{Deserialize, Serialize};
@@ -39,15 +39,13 @@ pub enum Payload {
     ParticipantJoined {
         id: String,
         name: String,
-        estimating: Option<bool>
-
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Message {
-    receiver: Receiver,
-    payload: Payload,
+    pub receiver: Receiver,
+    pub payload: Payload,
 }
 
 pub type MessageStream = Sender<Message>;

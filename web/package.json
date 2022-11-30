@@ -27,8 +27,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH='../static' react-scripts build",
-    "build:watch": "PUBLIC_URL=/ BUILD_PATH='../static' cra-build-watch",
+    "build": "cross-env BUILD_PATH='../static' react-scripts build",
+    "build:watch": "cross-env PUBLIC_URL=/ BUILD_PATH='../static' cra-build-watch",
     "test": "react-scripts test",
     "lint": "eslint ./src/**/**.ts*"
   },
@@ -50,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
