@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "[web] build:watch",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/web",
+      "command": "yarn run build:watch"
+    },
+    {
+      "name": "[server] run",
+      "request": "launch",
+      "type": "lldb",
+      "cargo": {
+        "args": [
+          "build",
+          "--bin=japp",
+          "--package=japp"
+        ],
+      },
+      "sourceLanguages": ["rust"],
+
+      "env": {
+        "ROCKET_MONGO_DATABASE": "japp",
+        "ROCKET_MONGO_URL": "mongodb://localhost",
+        "ROCKET_SECRET": "V8R+0/a1aBoLca5huxTG7YcuUu3N/wZlaS8hp8tl5aM"
+      },
+      "cwd": "${workspaceFolder}",
+    }
+  ]
+}
