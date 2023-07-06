@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run all" type="CompoundRunConfigurationType">
-    <toRun name="[Full] Run" type="CargoCommandRunConfiguration" />
+    <toRun name="[Server] Run" type="CargoCommandRunConfiguration" />
     <toRun name="[web] build:watch" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>

@@ -23,12 +23,14 @@ import { Page } from '../common/page'
 import Session from './session'
 import { SessionView } from './session-view'
 import { Spinner } from '../common/spinner'
+import { useEventStream } from './use-event-stream'
 
 export default () => {
   const { sessionId, secret } = useSessionParams()
   const backend = useBackend()
   const { sessionName, setSessionName, ownName, setOwnName } = useSessionStore()
   const [credentialsValid, setCredentialsValid] = useState<boolean | undefined>()
+  const [openStream, closeStream] = useEventStream()
 
   useEffect(() => {
     if (!sessionId || !secret) {
@@ -38,10 +40,19 @@ export default () => {
       .notFound(() => setCredentialsValid(false))
       .unauthorized(() => setCredentialsValid(false))
       .json<{ name: string }>()
-      .then(it => {
-        setSessionName(it.name)
-        setCredentialsValid(true)
+      .then(loginResponse => {
+        return !loginResponse
+          ? Promise.resolve()
+          : Promise.all([
+            backend.get(`/session/${sessionId}/participant/me`).json<{ name?: string }>(),
+            openStream()
+          ]).then(([nameResponse]) => {
+            setOwnName(nameResponse.name)
+            setSessionName(loginResponse.name)
+            setCredentialsValid(true)
+          })
       })
+    return () => closeStream()
   }, [sessionId, secret])
 
   useEffect(() => {

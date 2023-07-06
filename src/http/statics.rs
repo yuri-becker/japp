@@ -13,8 +13,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
-use rocket::{fs::NamedFile, get, routes, Route};
+use rocket::{fs::NamedFile, fs::relative, get, routes, Route};
 use std::path::Path;
+use rocket::fs::FileServer;
 
 #[get("/")]
 async fn index() -> Option<NamedFile> {
@@ -38,6 +39,15 @@ async fn app() -> Option<NamedFile> {
     NamedFile::open(Path::new("static/index.html")).await.ok()
 }
 
-pub fn routes() -> Vec<Route> {
-    routes![index, imprint, data_privacy, app]
+pub struct Static {}
+
+impl Static {
+    pub fn routes() -> Vec<Route> {
+        routes![index, imprint, data_privacy, app]
+    }
+
+    pub fn files() -> FileServer {
+        FileServer::from(relative!("static")).rank(2)
+    }
 }
+
