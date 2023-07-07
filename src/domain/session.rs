@@ -15,11 +15,14 @@
  */
 
 use crate::domain::domain::DomainObject;
-use mongodb::bson::oid::ObjectId;
-use mongodb::bson::{doc, to_bson, Bson};
+use mongodb::bson::oid::{self, ObjectId};
+use mongodb::bson::{doc, to_bson, to_document, Bson};
+use mongodb::error::Error;
 use mongodb::options::CreateIndexOptions;
-use mongodb::IndexModel;
+use mongodb::{Collection, Database, IndexModel};
 use serde::{Deserialize, Serialize};
+
+use super::domain::to_oid;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Participant {
@@ -80,21 +83,19 @@ impl DomainObject for Session {
     }
 }
 
-pub mod session_repository {
-    use crate::application::database::database;
-    use crate::domain::domain::to_oid;
-    use crate::domain::session::{Participant, Scale, Session};
-    use mongodb::bson::doc;
-    use mongodb::bson::oid;
-    use mongodb::bson::to_document;
-    use mongodb::error::Error;
-    use mongodb::Collection;
-
-    fn collection() -> Collection<Session> {
-        database().collection::<Session>("sessions")
+pub struct SessionRepository {
+    collection: Collection<Session>,
+}
+impl From<&Database> for SessionRepository {
+    fn from(value: &Database) -> Self {
+        SessionRepository {
+            collection: value.collection::<Session>("sessions"),
+        }
     }
+}
 
-    pub async fn create(name: String, secret: String) -> Result<Session, Error> {
+impl SessionRepository {
+    pub async fn create(&self, name: String, secret: String) -> Result<Session, Error> {
         let doc = Session {
             id: None,
             name: name.to_string(),
@@ -106,7 +107,7 @@ pub mod session_repository {
                 .map(|&it| it.to_string())
                 .collect(),
         };
-        collection()
+        self.collection
             .insert_one(&doc, None)
             .await
             .map(|result| Session {
@@ -115,15 +116,15 @@ pub mod session_repository {
             })
     }
 
-    pub async fn find_by_id(id: &str) -> Result<Option<Session>, Error> {
-        collection()
+    pub async fn find_by_id(&self, id: &str) -> Result<Option<Session>, Error> {
+        self.collection
             .find_one(doc! {"_id": oid::ObjectId::parse_str(id).unwrap()}, None)
             .await
     }
 
-    pub async fn create_participant(session_id: &str) -> Result<Participant, Error> {
+    pub async fn create_participant(&self, session_id: &str) -> Result<Participant, Error> {
         let participant = Participant::default();
-        collection()
+        self.collection
             .update_one(
                 doc! {"_id": oid::ObjectId::parse_str(session_id).unwrap()},
                 doc! {"$push": {"participants": &participant}},
@@ -134,6 +135,7 @@ pub mod session_repository {
     }
 
     pub async fn find_participant_by_id(
+        &self,
         session_id: &str,
         participant: &str,
     ) -> Result<Option<Participant>, Error> {
@@ -142,7 +144,7 @@ pub mod session_repository {
             return Result::Ok(Option::None);
         }
         let participant = participant.unwrap();
-        find_by_id(session_id)
+        self.find_by_id(session_id)
             .await
             .map(|it| {
                 it.map(|session| {
@@ -157,6 +159,7 @@ pub mod session_repository {
     }
 
     pub async fn update_participant(
+        &self,
         session_id: &str,
         participant: &Participant,
     ) -> Result<(), Error> {
@@ -170,8 +173,7 @@ pub mod session_repository {
         doc.keys().for_each(|key| {
             update.insert(format!("participants.$.{}", key), doc.get(key).unwrap());
         });
-        collection()
-        .update_one(
+        self.collection.update_one(
           doc! {"$and": [{"_id": oid::ObjectId::parse_str(session_id).unwrap()}, {"participants._id": participant.id.unwrap()}]},
           doc! {"$set": update},
           Option::None,

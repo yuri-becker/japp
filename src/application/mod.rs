@@ -14,6 +14,6 @@
  * along with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-pub mod database;
 pub mod error;
 pub mod participant_id;
+pub mod static_folder;

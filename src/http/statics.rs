@@ -13,30 +13,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
-use rocket::{fs::NamedFile, fs::relative, get, routes, Route};
-use std::path::Path;
 use rocket::fs::FileServer;
+use rocket::{fs::NamedFile, get, routes, Route, State};
+use std::path::PathBuf;
+
+use crate::application::static_folder::StaticFolder;
 
 #[get("/")]
-async fn index() -> Option<NamedFile> {
-    NamedFile::open(Path::new("static/landing.html")).await.ok()
+async fn index(static_folder: &State<StaticFolder>) -> Option<NamedFile> {
+    NamedFile::open(static_folder.0.join("landing.html"))
+        .await
+        .ok()
 }
 
 #[get("/imprint")]
-async fn imprint() -> Option<NamedFile> {
-    NamedFile::open(Path::new("static/imprint.html")).await.ok()
+async fn imprint(static_folder: &State<StaticFolder>) -> Option<NamedFile> {
+    NamedFile::open(static_folder.0.join("imprint.html"))
+        .await
+        .ok()
 }
 
 #[get("/data-privacy")]
-async fn data_privacy() -> Option<NamedFile> {
-    NamedFile::open(Path::new("static/data-privacy.html"))
+async fn data_privacy(static_folder: &State<StaticFolder>) -> Option<NamedFile> {
+    NamedFile::open(static_folder.0.join("data-privacy.html"))
         .await
         .ok()
 }
 
 #[get("/app/<_..>")]
-async fn app() -> Option<NamedFile> {
-    NamedFile::open(Path::new("static/index.html")).await.ok()
+async fn app(static_folder: &State<StaticFolder>) -> Option<NamedFile> {
+    NamedFile::open(static_folder.0.join("index.html")).await.ok()
 }
 
 pub struct Static {}
@@ -46,8 +52,7 @@ impl Static {
         routes![index, imprint, data_privacy, app]
     }
 
-    pub fn files() -> FileServer {
-        FileServer::from(relative!("static")).rank(2)
+    pub fn files(path: &PathBuf) -> FileServer {
+        FileServer::from(path).rank(2)
     }
 }
-

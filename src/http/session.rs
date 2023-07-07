@@ -14,10 +14,9 @@
  * along with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use std::borrow::Borrow;
 use crate::application::error::ErrorResponse;
 use crate::application::participant_id::ParticipantId;
-use crate::domain::session::{session_repository, Participant};
+use crate::domain::session::{SessionRepository, Participant};
 use crate::usecase::generate_session_name::generate_session_name;
 use crate::usecase::secrets::{generate_secret, verify_secret};
 use mongodb::bson::oid;
@@ -71,9 +70,10 @@ impl From<Participant> for ParticipantResponse {
 #[post("/", data = "<req>")]
 async fn create_session(
     req: Json<CreateSessionRequest<'_>>,
+    session_repostitory: &State<SessionRepository>
 ) -> Result<Json<CreateSessionResponse>, ErrorResponse> {
     let secret = generate_secret();
-    session_repository::create(
+    session_repostitory.create(
         req.name
             .filter(|name| !name.trim().is_empty())
             .map(|name| name.trim().to_string())
@@ -96,8 +96,9 @@ async fn log_into_session(
     id: &str,
     secret: &str,
     cookies: &CookieJar<'_>,
+    session_repository: &State<SessionRepository>
 ) -> Result<Json<LogIntoSessionResponse>, ErrorResponse> {
-    let db_result = session_repository::find_by_id(id).await;
+    let db_result = session_repository.find_by_id(id).await;
     if db_result.is_err() {
         return Result::Err(ErrorResponse::Mongo(db_result.unwrap_err()));
     }
@@ -115,7 +116,7 @@ async fn log_into_session(
     }
     let cookie_name = format!("participant_id__{}", id);
     if cookies.get_private(&cookie_name).is_none() {
-        let participant = session_repository::create_participant(id).await;
+        let participant = session_repository.create_participant(id).await;
         if participant.is_err() {
             return Result::Err(ErrorResponse::Mongo(participant.unwrap_err()));
         }
@@ -133,9 +134,10 @@ async fn set_name(
     session_id: &str,
     name: &str,
     participant_id: ParticipantId<'_>,
-    message_stream: &State<MessageStream>
+    message_stream: &State<MessageStream>,
+    session_repository: &State<SessionRepository>
 ) -> Result<(), ErrorResponse> {
-    session_repository::update_participant(
+    session_repository.update_participant(
         session_id,
         &Participant {
             id: Option::Some(oid::ObjectId::parse_str(participant_id.0.to_string()).unwrap()),
@@ -157,8 +159,9 @@ async fn set_name(
 async fn get_session(
     session_id: &str,
     _participant: ParticipantId<'_>,
+    session_repository: &State<SessionRepository>
 ) -> Result<Json<GetSessionResponse>, ErrorResponse> {
-    session_repository::find_by_id(session_id)
+    session_repository.find_by_id(session_id)
         .await
         .map_err(ErrorResponse::Mongo)
         .and_then(|it| it.ok_or(ErrorResponse::NotFound()))
@@ -171,8 +174,9 @@ async fn get_session(
 async fn get_me(
     session_id: &str,
     participant_id: ParticipantId<'_>,
+    session_repostitory: &State<SessionRepository>
 ) -> Result<Json<ParticipantResponse>, ErrorResponse> {
-    session_repository::find_participant_by_id(session_id, participant_id.0.as_ref())
+    session_repostitory.find_participant_by_id(session_id, participant_id.0.as_ref())
         .await
         .map_err(ErrorResponse::Mongo)
         .and_then(|it| it.ok_or(ErrorResponse::NotFound()))

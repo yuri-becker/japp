@@ -14,12 +14,14 @@
  * along with japp.  If not, see http://www.gnu.org/licenses/.
  */
 
-use std::path::Path;
-use rocket::fs::NamedFile;
+use rocket::{fs::NamedFile, Request};
+
+use crate::application::static_folder::StaticFolder;
 
 #[catch(404)]
-pub async fn not_found() -> Option<NamedFile> {
-    NamedFile::open(Path::new("static/404.html")).await.ok()
+pub async fn not_found(req: &Request<'_>) -> Option<NamedFile> {
+    let static_folder = req.rocket().state::<StaticFolder>().expect("StaticFolder is not in state");
+    NamedFile::open(static_folder.0.join("404.html")).await.ok()
 }
 
 #[catch(401)]

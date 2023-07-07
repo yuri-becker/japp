@@ -14,7 +14,7 @@
  * along with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use crate::domain::session::session_repository;
+use crate::domain::session::SessionRepository;
 use mongodb::bson::oid;
 use okapi::openapi3::{Responses, SecurityScheme, SecuritySchemeData};
 use rocket::http::Status;
@@ -87,7 +87,8 @@ impl<'r> FromRequest<'r> for ParticipantId<'r> {
             debug!("No cookie with the session id present. Returnung Unauthorized.");
             return Outcome::Failure((Status::Unauthorized, Status::Unauthorized));
         }
-        let session = session_repository::find_by_id(session_id).await;
+        let session_repository = request.rocket().state::<SessionRepository>().expect("SessionRepository is not in state");
+        let session = session_repository.find_by_id(session_id).await;
         if session.is_err() {
             return Outcome::Failure((Status::InternalServerError, Status::InternalServerError));
         }
