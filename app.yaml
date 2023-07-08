@@ -1,9 +1,0 @@
-runtime: custom
-env: flex
-skip_files:
-  - ^target.*$
-  - ^web.*$
-env_variables:
-  ROCKET_SECRET_KEY: $ROCKET_SECRET_KEY
-  ROCKET_MONGO_URL: $ROCKET_MONGO_URL
-  ROCKET_MONGO_DATABASE: japp

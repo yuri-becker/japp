@@ -13,20 +13,10 @@
       "request": "launch",
       "type": "lldb",
       "cargo": {
-        "args": [
-          "build",
-          "--bin=japp",
-          "--package=japp"
-        ],
+        "args": ["shuttle", "run"]
       },
       "sourceLanguages": ["rust"],
-
-      "env": {
-        "ROCKET_MONGO_DATABASE": "japp",
-        "ROCKET_MONGO_URL": "mongodb://localhost",
-        "ROCKET_SECRET": "V8R+0/a1aBoLca5huxTG7YcuUu3N/wZlaS8hp8tl5aM"
-      },
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

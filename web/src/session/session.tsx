@@ -1,31 +1,14 @@
-/*
- * Copyright (C) 2022 - This file is part of "JAPP".
- *
- * "JAPP" is free software: you can redistribute it and/or modify it under the
- *  terms of version 3 of the GNU Affero General Public License as published by the
- *  Free Software Foundation.
- *
- * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
- *   details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with JAPP.  If not, see http://www.gnu.org/licenses/.
- */
-
 import React, { useEffect, useState } from 'react'
 import { useBackend } from '../common/use-backend'
 import { useSessionStore } from './session-state'
 import { SetName } from './set-name'
 import { useSessionParams } from './use-session-params'
 import { Page } from '../common/page'
-import Session from './session'
 import { SessionView } from './session-view'
 import { Spinner } from '../common/spinner'
 import { useEventStream } from './use-event-stream'
 
-export default () => {
+const Session = () => {
   const { sessionId, secret } = useSessionParams()
   const backend = useBackend()
   const { sessionName, setSessionName, ownName, setOwnName } = useSessionStore()
@@ -53,7 +36,8 @@ export default () => {
           })
       })
     return () => closeStream()
-  }, [sessionId, secret])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId, secsret])
 
   useEffect(() => {
     if (!credentialsValid) {
@@ -62,6 +46,7 @@ export default () => {
     backend.get(`/session/${sessionId}/participant/me`)
       .json<{ name?: string }>()
       .then(it => setOwnName(it.name))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, credentialsValid])
 
   return <Page title={credentialsValid === undefined ? undefined : sessionName}>
@@ -71,3 +56,5 @@ export default () => {
     {credentialsValid === undefined && <Spinner size='page' color='primary'/>}
   </Page>
 }
+
+export default Session
