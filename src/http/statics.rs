@@ -1,23 +1,20 @@
 /*
- * Copyright (C) 2022 - This file is part of "JAPP".
- *
+ * Copyright (C) 2023 - This file is part of "JAPP".
  * "JAPP" is free software: you can redistribute it and/or modify it under the
- *  terms of version 3 of the GNU Affero General Public License as published by the
- *  Free Software Foundation.
- *
+ * terms of version 3 of the GNU Affero General Public License as published by the
+ * Free Software Foundation.
  * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
- *   details.
- *
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * details.
  * You should have received a copy of the GNU Affero General Public License
- * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
-use rocket::fs::FileServer;
-use rocket::{fs::NamedFile, get, routes, Route, State};
-use std::path::PathBuf;
 
 use crate::application::static_folder::StaticFolder;
+use rocket::fs::{FileServer, NamedFile};
+use rocket::{get, routes, Route, State};
+use std::path::PathBuf;
 
 #[get("/")]
 async fn index(static_folder: &State<StaticFolder>) -> Option<NamedFile> {
@@ -42,7 +39,9 @@ async fn data_privacy(static_folder: &State<StaticFolder>) -> Option<NamedFile> 
 
 #[get("/app/<_..>")]
 async fn app(static_folder: &State<StaticFolder>) -> Option<NamedFile> {
-    NamedFile::open(static_folder.0.join("index.html")).await.ok()
+    NamedFile::open(static_folder.0.join("index.html"))
+        .await
+        .ok()
 }
 
 pub struct Static {}

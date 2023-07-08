@@ -1,0 +1,40 @@
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "psi-header.config": {
+    "forceToTop": true,
+    "blankLinesAfter": 1
+  },
+  "psi-header.templates": [
+    {
+      "language": "*",
+      "template": [
+        "Copyright (C) <<year>> - This file is part of \"JAPP\".",
+        "\"JAPP\" is free software: you can redistribute it and/or modify it under the",
+        "terms of version 3 of the GNU Affero General Public License as published by the",
+        "Free Software Foundation.",
+        "\"JAPP\" is distributed in the hope that it will be useful, but WITHOUT ANY",
+        "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS",
+        "FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more",
+        "details.",
+        "You should have received a copy of the GNU Affero General Public License",
+        "long with JAPP.  If not, see http://www.gnu.org/licenses/."
+      ]
+    }
+  ],
+  "psi-header.changes-tracking": {
+    "isActive": true,
+    "autoHeader": "manualSave"
+  },
+  "rust-analyzer.rustfmt.extraArgs": ["+nightly"]
+}

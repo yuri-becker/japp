@@ -1,21 +1,19 @@
 /*
- * Copyright (C) 2022 - This file is part of "JAPP".
- *
+ * Copyright (C) 2023 - This file is part of "JAPP".
  * "JAPP" is free software: you can redistribute it and/or modify it under the
- *  terms of version 3 of the GNU Affero General Public License as published by the
- *  Free Software Foundation.
- *
+ * terms of version 3 of the GNU Affero General Public License as published by the
+ * Free Software Foundation.
  * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
- *   details.
- *
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * details.
  * You should have received a copy of the GNU Affero General Public License
- * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
+
 use rand::seq::SliceRandom;
-use std::io::BufRead;
-use std::{fs::File, io::BufReader};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 fn animals() -> Vec<String> {
     let file = File::open("resources/animals.txt").expect("Could not read animals.txt");

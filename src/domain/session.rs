@@ -1,19 +1,17 @@
 /*
- * Copyright (C) 2022 - This file is part of "JAPP".
- *
+ * Copyright (C) 2023 - This file is part of "JAPP".
  * "JAPP" is free software: you can redistribute it and/or modify it under the
- *  terms of version 3 of the GNU Affero General Public License as published by the
- *  Free Software Foundation.
- *
+ * terms of version 3 of the GNU Affero General Public License as published by the
+ * Free Software Foundation.
  * "JAPP" is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
- *   details.
- *
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * details.
  * You should have received a copy of the GNU Affero General Public License
- * along with JAPP.  If not, see http://www.gnu.org/licenses/.
+ * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
+use super::domain::to_oid;
 use crate::domain::domain::DomainObject;
 use mongodb::bson::oid::{self, ObjectId};
 use mongodb::bson::{doc, to_bson, to_document, Bson};
@@ -21,8 +19,6 @@ use mongodb::error::Error;
 use mongodb::options::CreateIndexOptions;
 use mongodb::{Collection, Database, IndexModel};
 use serde::{Deserialize, Serialize};
-
-use super::domain::to_oid;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Participant {

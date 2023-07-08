@@ -1,6 +1,9 @@
 {
   "recommendations": [
     "vadimcn.vscode-lldb",
-    "rust-lang.rust-analyzer"
+    "rust-lang.rust-analyzer",
+    "bierner.markdown-mermaid",
+    "dbaeumer.vscode-eslint",
+    "psioniq.psi-header"
   ]
 }

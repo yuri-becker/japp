@@ -11,25 +11,7 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use crate::application::static_folder::StaticFolder;
-use rocket::fs::NamedFile;
-use rocket::Request;
+use super::message::Message;
+use tokio::sync::broadcast::Sender;
 
-#[catch(404)]
-pub async fn not_found(req: &Request<'_>) -> Option<NamedFile> {
-    let static_folder = req
-        .rocket()
-        .state::<StaticFolder>()
-        .expect("StaticFolder is not in state");
-    NamedFile::open(static_folder.0.join("404.html")).await.ok()
-}
-
-#[catch(401)]
-pub fn unauthorized() -> &'static str {
-    "Unauthorized 🎅"
-}
-
-#[catch(500)]
-pub fn internal_server_error() -> &'static str {
-    "Internal Server Error 😭"
-}
+pub type MessageStream = Sender<Message>;

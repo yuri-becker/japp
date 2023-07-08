@@ -11,25 +11,27 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use crate::application::static_folder::StaticFolder;
-use rocket::fs::NamedFile;
-use rocket::Request;
+use crate::http::api::session::session_response::SessionResponse;
+use mongodb::bson::oid::ObjectId;
+use rocket::serde::{Deserialize, Serialize};
 
-#[catch(404)]
-pub async fn not_found(req: &Request<'_>) -> Option<NamedFile> {
-    let static_folder = req
-        .rocket()
-        .state::<StaticFolder>()
-        .expect("StaticFolder is not in state");
-    NamedFile::open(static_folder.0.join("404.html")).await.ok()
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum Receiver {
+    Participant {
+        session: ObjectId,
+        participant: ObjectId,
+    },
+    Session(ObjectId),
 }
 
-#[catch(401)]
-pub fn unauthorized() -> &'static str {
-    "Unauthorized 🎅"
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum Payload {
+    SessionInit { session: SessionResponse },
+    ParticipantJoined { id: String, name: String },
 }
 
-#[catch(500)]
-pub fn internal_server_error() -> &'static str {
-    "Internal Server Error 😭"
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Message {
+    pub receiver: Receiver,
+    pub payload: Payload,
 }

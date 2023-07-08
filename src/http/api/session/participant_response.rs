@@ -11,25 +11,26 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use crate::application::static_folder::StaticFolder;
-use rocket::fs::NamedFile;
-use rocket::Request;
+use crate::domain::session::Participant;
+use rocket::serde::Serialize;
+use rocket_okapi::JsonSchema;
+use serde::Deserialize;
 
-#[catch(404)]
-pub async fn not_found(req: &Request<'_>) -> Option<NamedFile> {
-    let static_folder = req
-        .rocket()
-        .state::<StaticFolder>()
-        .expect("StaticFolder is not in state");
-    NamedFile::open(static_folder.0.join("404.html")).await.ok()
+#[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
+pub struct ParticipantResponse {
+    pub id: String,
+    pub name: Option<String>,
+    pub estimating: Option<bool>,
+    pub away: Option<bool>,
 }
 
-#[catch(401)]
-pub fn unauthorized() -> &'static str {
-    "Unauthorized 🎅"
-}
-
-#[catch(500)]
-pub fn internal_server_error() -> &'static str {
-    "Internal Server Error 😭"
+impl From<Participant> for ParticipantResponse {
+    fn from(it: Participant) -> Self {
+        ParticipantResponse {
+            id: it.id.unwrap().to_hex(),
+            name: it.name,
+            estimating: it.estimating,
+            away: it.away,
+        }
+    }
 }
