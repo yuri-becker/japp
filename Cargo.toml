@@ -26,3 +26,4 @@ tokio = "1.29.1"
 shuttle-secrets = "0.20.0"
 shuttle-shared-db = {version = "0.20.0", features = ["mongodb"] }
 shuttle-static-folder = "0.20.0"
+cargo-watch = "8.4.0"

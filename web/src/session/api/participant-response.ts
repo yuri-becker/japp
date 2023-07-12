@@ -11,11 +11,9 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-export declare type EventType = 'ParticipantJoined'
-
-type ISessionEvent<N extends EventType, T> = Record<N, T>
-
-export interface ParticipantJoined extends ISessionEvent<'ParticipantJoined', { id: string, name: string }>{
+export interface ParticipantResponse {
+  id: string,
+  name?: string,
+  estimating?: boolean,
+  away?: boolean,
 }
-
-export declare type SessionEvent = ParticipantJoined

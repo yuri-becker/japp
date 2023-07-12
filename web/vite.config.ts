@@ -1,17 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-
-export default defineConfig(({mode}) => {
+export default defineConfig(({ mode }) => {
   const isDev = mode === 'dev'
   return ({
     plugins: [react()],
     build: {
       outDir: '../static',
       emptyOutDir: true,
-      cssMinify: true,
+      cssMinify: !isDev,
       watch: isDev ? {} : null,
-      sourcemap: isDev
-    },
+      sourcemap: isDev,
+      minify: !isDev
+    }
   })
 })

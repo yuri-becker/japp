@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useBackend } from '../common/use-backend'
-import { useSessionStore } from './session-state'
-import { SetName } from './set-name'
-import { useSessionParams } from './use-session-params'
+import { useEffect, useState } from 'react'
 import { Page } from '../common/page'
-import { SessionView } from './session-view'
 import { Spinner } from '../common/spinner'
-import { useEventStream } from './use-event-stream'
+import { useBackend } from '../common/use-backend'
+import { ParticipantResponse } from './api/participant-response'
+import { useEventStream } from './api/use-event-stream'
+import { SessionView } from './session-view'
+import { SetName } from './set-name'
+import { useOwnParticipant, useSessionName, useSessionStore } from './state/session.state'
+import { useSessionParams } from './use-session-params'
 
 const Session = () => {
   const { sessionId, secret } = useSessionParams()
   const backend = useBackend()
-  const { sessionName, setSessionName, ownName, setOwnName } = useSessionStore()
+  const { setOwnParticipantId } = useSessionStore()
+  const sessionName = useSessionName()
+  const ownParticipant = useOwnParticipant()
   const [credentialsValid, setCredentialsValid] = useState<boolean | undefined>()
   const [openStream, closeStream] = useEventStream()
 
@@ -27,31 +30,30 @@ const Session = () => {
         return !loginResponse
           ? Promise.resolve()
           : Promise.all([
-            backend.get(`/session/${sessionId}/participant/me`).json<{ name?: string }>(),
+            backend.get(`/session/${sessionId}/participant/me`).json<ParticipantResponse>(),
             openStream()
-          ]).then(([nameResponse]) => {
-            setOwnName(nameResponse.name)
-            setSessionName(loginResponse.name)
+          ]).then(([meResponse]) => {
+            setOwnParticipantId(meResponse.id)
             setCredentialsValid(true)
           })
       })
     return () => closeStream()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, secsret])
+  }, [sessionId, secret])
 
   useEffect(() => {
     if (!credentialsValid) {
       return
     }
     backend.get(`/session/${sessionId}/participant/me`)
-      .json<{ name?: string }>()
-      .then(it => setOwnName(it.name))
+      .json<ParticipantResponse>()
+      .then(it => setOwnParticipantId(it.id))
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, credentialsValid])
 
   return <Page title={credentialsValid === undefined ? undefined : sessionName}>
-    {credentialsValid && ownName && <SessionView/>}
-    {credentialsValid && !ownName && <SetName/>}
+    {credentialsValid && ownParticipant?.name && <SessionView/>}
+    {credentialsValid && !ownParticipant?.name && <SetName/>}
     {credentialsValid !== undefined && !credentialsValid && <h2>The session link is not valid (╯°益°)╯彡┻━┻</h2>}
     {credentialsValid === undefined && <Spinner size='page' color='primary'/>}
   </Page>

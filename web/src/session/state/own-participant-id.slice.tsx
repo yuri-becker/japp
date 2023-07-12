@@ -11,25 +11,17 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use super::participant_response::ParticipantResponse;
-use crate::domain::session::Session;
-use rocket::serde::Serialize;
-use rocket_okapi::JsonSchema;
-use serde::Deserialize;
+import { StateCreator } from 'zustand'
+import { Slices, useSessionStore } from './session.state'
 
-#[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
-pub struct SessionResponse {
-    pub name: String,
-    pub participants: Vec<ParticipantResponse>,
-    pub scale: Vec<String>,
+export interface OwnParticipantIdSlice {
+  ownParticipantId?: string
+  setOwnParticipantId: (ownParticipantId: OwnParticipantIdSlice['ownParticipantId']) => void
 }
 
-impl From<Session> for SessionResponse {
-    fn from(value: Session) -> Self {
-        SessionResponse {
-            name: value.name,
-            participants: value.participants.into_iter().map(|it| it.into()).collect(),
-            scale: value.scale,
-        }
-    }
-}
+export const createOwnParticipantIdSlice: StateCreator<Slices, [], [], OwnParticipantIdSlice> = set => ({
+  ownParticipantId: undefined,
+  setOwnParticipantId: ownParticipantId => set(() => ({ ownParticipantId }))
+})
+
+export const useOwnParticipant = () => useSessionStore(state => state.session?.participants.find(particiant => particiant.id === state.ownParticipantId))

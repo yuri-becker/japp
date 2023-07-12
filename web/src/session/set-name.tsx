@@ -13,10 +13,9 @@
 
 import { useEffect, useState } from 'react'
 import { Input } from '../common/input'
-import { useBackend } from '../common/use-backend'
-import { useSessionStore } from './session-state'
-import { useSessionParams } from './use-session-params'
 import { Spinner } from '../common/spinner'
+import { useBackend } from '../common/use-backend'
+import { useSessionParams } from './use-session-params'
 
 export const SetName = () => {
   const { sessionId } = useSessionParams()
@@ -24,14 +23,13 @@ export const SetName = () => {
   const [name, setName] = useState<string | undefined>('')
   const [nameValid, setNameValid] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
-  const { setOwnName } = useSessionStore()
   useEffect(() => setNameValid(!!name?.trim()), [name])
 
   const click = () => {
     if (!nameValid) { return }
     setLoading(true)
     backend.put(undefined, `/session/${sessionId}/participant/${name}`)
-      .text(() => setOwnName(name))
+      .text(() => {})
       .finally(() => setLoading(false))
   }
 

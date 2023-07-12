@@ -11,6 +11,6 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-export const SessionView = () => {
-  return <p>Session</p>
+export interface CreateSessionRequest {
+  name?: string
 }

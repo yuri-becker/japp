@@ -11,6 +11,39 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-export const SessionView = () => {
-  return <p>Session</p>
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cargo",
+			"command": "watch",
+			"args": [
+				"-x",
+				"shuttle run",
+				"-i",
+				"Cargo.lock"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"label": "server: run"
+		},
+		{
+			"type": "cargo",
+			"command": "test",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "test",
+			"label": "server: test"
+		},
+		{
+			"type": "npm",
+			"script": "build:watch",
+			"path": "web",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "client: run",
+		}
+	],
 }

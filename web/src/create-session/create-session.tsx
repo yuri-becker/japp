@@ -14,27 +14,17 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Input } from '../common/input'
-import { useBackend } from '../common/use-backend'
 import { Page } from '../common/page'
 import { Spinner } from '../common/spinner'
+import { useCreateSession } from './api/use-create-session'
 
 const CreateSession = () => {
-  const backend = useBackend()
   const navigate = useNavigate()
   const [sessionName, setSessionName] = useState<string | undefined>('')
-  const [loading, setLoading] = useState(false)
+  const [createSession, loading] = useCreateSession()
 
-  const createSession = () => {
-    setLoading(true)
-    backend
-      .url('/session')
-      .post({ name: sessionName ?? undefined })
-      .json<{ id: string, secret: string }>()
-      .then(createdSession => {
-        navigate(`/session/${createdSession.id}/${createdSession.secret}`)
-      })
-      .finally(() => setLoading(false))
-  }
+  const onCreateClick = () => createSession({ name: sessionName ?? undefined })
+    .then(createdSession => navigate(`/session/${createdSession.id}/${createdSession.secret}`))
 
   return <Page subtitle="Create a session">
     <Input
@@ -45,7 +35,7 @@ const CreateSession = () => {
       value={sessionName}
       change={setSessionName}
     />
-    <button onClick={createSession} disabled={loading}>
+    <button onClick={onCreateClick} disabled={loading}>
       {loading && <Spinner size={'inline'}/>}
       <i className="icons8">&#xf106;</i>
       Create session

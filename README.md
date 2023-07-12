@@ -52,7 +52,7 @@ Why should you use JAPP? Well, if you really have to do Planning Poker (remotely
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-20232A?style=for-the-badge&logo=vite&logoColor=646CFF)](https://vitejs.dev)
 
-... as well as [zustand](https://github.com/pmndrs/zustand), [jest](https://jestjs.io) and
+... as well as [zustand](https://github.com/pmndrs/zustand), [jest](https://jestjs.io), [immer](https://immerjs.github.io/immer/) and
 [wretch](https://github.com/elbywan/wretch).
 
 #### Backend
@@ -98,12 +98,49 @@ server ([localhost:8000](http://localhost:8000) by default).
 
 ## Documentation
 
-Yea, I didn't document a lot, so I didn't want to make another file for this stuff.
 
 ### API
 
 The server's API is auto-generated and available at [/api/swagger](http://localhost:8000/api/swagger) when the server is
 started.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Events
+
+When a client joins a Session (or creates one) it gets the current Session state.
+
+Both the client and the server react to events happening within that Session (```SessionEvents```).
+1. The server updates the database to reflect the new state.
+2.  The clients connected to that sesion update its state. 
+
+This approach has the great disadvantage that state updates have to be implemented twice - on the server and on the client. The client receiving the events enables animated state transitions which wouldnt be possible if the server simply told the client the new state.
+
+In the future it might make sense to fully event-source the state and use a messaging broker.
+
+#### Example case: Voting for a card
+
+```mermaid
+sequenceDiagram
+
+actor Clients
+participant Server
+participant Database
+
+Clients ->>+ Server: "I vote 5"
+Note over Clients,Server: API call by a John's client
+Server ->>+ Server: Run Command vote_card
+par Server to Database
+ Server ->> Database: Persist Session with updated Votes
+and Server to Clients
+ Server ->>+ Clients:  John voted 5
+end
+deactivate Server
+Clients ->> Clients: Update state
+deactivate Clients
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Entities
 
@@ -137,16 +174,16 @@ class Issue {
 Session "1" *-- "*" Issue
 
 class Round {
-  + Estimation[] estimations
+  + Vote[] votes
   + boolean revealed
   + ObjectId revealedBy ~~Participant~~
 }
 
 Issue "1" *-- "1..*" Round
 
-class Estimation {
+class Vote {
   + ObjectId participant ~~Participant~~
-  + number estimation ~~scale~~
+  + number vote ~~scale~~
 }
 
 Round "1" *-- "*" Estimation

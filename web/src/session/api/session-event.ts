@@ -11,25 +11,12 @@
  * long with JAPP.  If not, see http://www.gnu.org/licenses/.
  */
 
-use super::participant_response::ParticipantResponse;
-use crate::domain::session::Session;
-use rocket::serde::Serialize;
-use rocket_okapi::JsonSchema;
-use serde::Deserialize;
+import { SessionResponse } from './session-response'
 
-#[derive(Serialize, Deserialize, JsonSchema, Debug, Clone)]
-pub struct SessionResponse {
-    pub name: String,
-    pub participants: Vec<ParticipantResponse>,
-    pub scale: Vec<String>,
-}
+export declare type EventType = 'ParticipantJoined' | 'SessionInit'
+type ISessionEvent<N extends EventType, T> = {type: N, payload: T}
 
-impl From<Session> for SessionResponse {
-    fn from(value: Session) -> Self {
-        SessionResponse {
-            name: value.name,
-            participants: value.participants.into_iter().map(|it| it.into()).collect(),
-            scale: value.scale,
-        }
-    }
-}
+export type ParticipantJoined = ISessionEvent<'ParticipantJoined', { id: string, name: string }>
+export type SessionInit = ISessionEvent<'SessionInit', {session: SessionResponse}>
+
+export declare type SessionEvent = ParticipantJoined | SessionInit
